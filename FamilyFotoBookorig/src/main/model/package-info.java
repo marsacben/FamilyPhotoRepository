@@ -5,4 +5,4 @@
  * @author marsa
  *
  */
-package FamilyFotos.model;
+package main.model;

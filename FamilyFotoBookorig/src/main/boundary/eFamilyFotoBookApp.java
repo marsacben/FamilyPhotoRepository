@@ -1,4 +1,4 @@
-package FamilyFotos.boundary;
+package main.boundary;
 
 import java.awt.EventQueue;
 import java.awt.Image;

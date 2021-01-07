@@ -1,4 +1,4 @@
-package FamilyFotos.model;
+package main.model;
 
 import java.util.LinkedList;
 
