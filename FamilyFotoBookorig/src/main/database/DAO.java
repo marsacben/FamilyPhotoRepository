@@ -60,6 +60,32 @@ public class DAO {
 			e.printStackTrace();
 			return;			
 		}*/
+		
+		try {
+			Statement stmt = connection.createStatement();
+			String str = "SELECT * FROM People";
+			ResultSet rset = stmt.executeQuery(str);
+
+			int custID = 0;
+			String custName = "";
+			String city = "";
+			int age = 0;
+			// Process the results
+			while (rset.next()) {
+				custID = rset.getInt("id");
+				custName = rset.getString("name");
+				city = rset.getString("city");
+				age = rset.getInt("age");
+				System.out.println("ID: " + custID + "   Name: " + custName + "   City: " + city + "   Age: " + age);
+			} // end while
+						
+			rset.close();
+			stmt.close();
+			connection.close();
+		} catch (SQLException e) {
+			System.out.println("Get Data Failed! Check output console");
+			e.printStackTrace();
+			return;	
 		return;
 	}
 }
