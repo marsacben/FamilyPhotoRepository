@@ -73,5 +73,9 @@ public class Node {
 	public void setKids(LinkedList<Node> kids) {
 		this.kids = kids;
 	}
+
+	public Node getKid(int num) {
+		return this.kids.get(num);
+	}
 	
 }

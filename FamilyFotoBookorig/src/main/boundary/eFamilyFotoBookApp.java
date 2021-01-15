@@ -68,7 +68,7 @@ public class eFamilyFotoBookApp {
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,}));
 		
-		String imagePath = "Fotos/Confusion.JPG";
+		String imagePath = "Fotos/CatyRock-Elisa-2020-Mexico.jpg";
 		String imagePath2 = "Fotos/Elisa-Esteban-04-07-1931.jpg";
 		/*
 		BufferedImage myPicture = null;

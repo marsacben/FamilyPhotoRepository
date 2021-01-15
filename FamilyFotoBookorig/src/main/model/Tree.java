@@ -20,6 +20,10 @@ public class Tree {
 					Node EstebanRockVarga = new Node("Esteban Rock Varga", PiroskaVarga, null, EstebanKids);
 					PiroskaKids.add(EstebanRockVarga);
 						
+						
+						Node MaureenRock = new Node("Maureen Paty Rock Rech", EstebanRockVarga, null, null);
+						EstebanKids.add(MaureenRock);
+					
 						Node SteveRock = new Node("Steve Rock Rech", EstebanRockVarga, null, null);
 						EstebanKids.add(SteveRock);
 						
@@ -37,14 +41,12 @@ public class Tree {
 								Node SantiagoLealContreras = new Node("Santiago Leal Contreras", null, AlejandraContrerasRock, null);
 								AleKids.add(SantiagoLealContreras);
 							
-							Node AndresContrerasRock = new Node("Alndres Contreras Rock", null, PriscaRock, null);
+							Node AndresContrerasRock = new Node("Andres Contreras Rock", null, PriscaRock, null);
 							PriscaKids.add(AndresContrerasRock);
 							
 							Node CatyContrerasRock = new Node("Caty Contreras Rock", null, PriscaRock, null);
 							PriscaKids.add(CatyContrerasRock);
 						
-						Node MaureenRock = new Node("Maureen Paty Rock Rech", EstebanRockVarga, null, null);
-						EstebanKids.add(MaureenRock);
 					
 					LinkedList<Node> AnitaKids = new LinkedList<>();
 					Node AnitaRockVarga = new Node("Anita Rock Varga", PiroskaVarga, null, AnitaKids);
@@ -57,7 +59,7 @@ public class Tree {
 						AnitaKids.add(BradfordEatonRock);
 					
 						LinkedList<Node> SharonKids = new LinkedList<>();
-						Node SharonEatonRock = new Node("SharonEatonRock", AnitaRockVarga, null, SharonKids);
+						Node SharonEatonRock = new Node("Sharon Eaton Rock", AnitaRockVarga, null, SharonKids);
 						AnitaKids.add(SharonEatonRock);
 					
 					LinkedList<Node> CatyKids = new LinkedList<>();
@@ -79,12 +81,32 @@ public class Tree {
 						Node CatarinaSacristan = new Node("Catarina Sacristan Rock", CatarinaRockVarga, null, Caty2Kids);
 						CatyKids.add(CatarinaRockVarga);
 							
-							Node EmiliaRyanSacristan = new Node("EmiliaRyanSacristan", CatarinaSacristan, null, null);
+							Node EmiliaRyanSacristan = new Node("Emilia Ryan Sacristan", CatarinaSacristan, null, null);
 						
 					
 					LinkedList<Node> AliciaKids = new LinkedList<>();
 					Node AliciaRockVarga = new Node("Alicia Rock Varga", PiroskaVarga, null, AliciaKids);
 					PiroskaKids.add(AliciaRockVarga);
 					
+	}
+	
+	public Node findPerson(String code) {
+		Node n = this.me;
+		for(int i=0; i<code.length(); i++) {
+			int r =code.charAt(i);
+			if(r=='F' || r=='M') {
+				if(r=='F') {
+					n = n.getDad();
+				}
+				else {
+					n = n.getMom();
+				}
+			}
+			else {
+				int num = r;
+				n = n.getKid(num);
+			}
+		}
+		return n;
 	}
 }
