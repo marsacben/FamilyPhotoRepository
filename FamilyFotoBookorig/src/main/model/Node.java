@@ -17,29 +17,41 @@ public class Node {
 		this.kids = kids;
 	}
 	
-	public LinkedList<Node> getAncestors(Node n){
-		LinkedList<Node> a = new LinkedList<Node>();
-		Node mom = n.getMom();
-		Node dad = n.getDad();
-		if(mom != null) {
-			a.addAll(getAncestors(mom));
-		}
-		if(dad != null) {
-			a.addAll(getAncestors(dad));
-		}
-		return a;
-	}
-	
-	public LinkedList<Node> getDecendents(Node n){
-		LinkedList<Node> a = new LinkedList<Node>();
-		LinkedList<Node> kids = n.getKids();
-		if(kids != null) {
-			for(int i=0; i<kids.size(); i++) {
-				a.addAll(getDecendents(kids.get(i)));
+	public String getAncestors(Node n){
+		String s= "";
+		if(n != null) {
+			s = s.concat(" person = '");
+			s = s.concat(n.getName());
+			s = s.concat("'");
+			Node mom = n.getMom();
+			Node dad = n.getDad();
+			if(mom != null) {
+				s = s.concat(" OR");
+				s = s.concat(getAncestors(mom));
+			}
+			if(dad != null) {
+				s = s.concat(" OR");
+				s = s.concat(getAncestors(dad));
 			}
 		}
-		a.addAll(getAncestors(n.getDad()));
-		return a;
+		return s;
+	}
+	
+	public String getDecendents(Node n){
+		String s= "";
+		if(n != null) {
+			s = s.concat(" person = '");
+			s = s.concat(n.getName());
+			s = s.concat("'");
+			LinkedList<Node> kids = n.getKids();
+			if(kids != null) {
+				for(int i=0; i<kids.size(); i++) {
+					s = s.concat(" OR");
+					s = s.concat(getDecendents(kids.get(i)));
+				}
+			}
+		}
+		return s;
 	}
 	
 	public String getName() {

@@ -3,8 +3,15 @@ package main.model;
 import java.util.LinkedList;
 
 public class Tree {
-	Node me;
+	protected Node me;
 	
+	
+	
+	public Node getMe() {
+		return me;
+	}
+
+
 	public void createTree() {
 		LinkedList<Node> AntonioKids = new LinkedList<>();
 

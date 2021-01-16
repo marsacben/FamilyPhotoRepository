@@ -33,7 +33,8 @@ public class DAO {
 	
 		try {
 			 connection = DriverManager.getConnection(
-			 		"jdbc:oracle:thin:@localhost:1521:orcl", USERID, PASSWORD);//jdbc:oracle:thin:@localhost:1521:orcl", USERID, PASSWORD  jdbc:oracle:thin:localDB/SYSTEM@//localhost:1521/orclpdb
+			 		//"jdbc:oracle:thin:@localhost:1521:orcl", USERID, PASSWORD);//jdbc:oracle:thin:@localhost:1521:orcl", USERID, PASSWORD  jdbc:oracle:thin:localDB/SYSTEM@//localhost:1521/orclpdb
+					 "jdbc:oracle:thin:@[2806:106e:20:15f4:597c:4e63:2c85:b0eb]:1521:orcl", USERID, PASSWORD);
 		} catch (SQLException e) {
 			System.out.println("Connection Failed! Check output console");
 			e.printStackTrace();
@@ -163,15 +164,22 @@ public class DAO {
 		public String[] getPersonPhotos(String search) {
 			String photos[] = new String[9];
 			try {
-				String str = "SELECT PHOTO FROM PHOTOS";
+				String str = "SELECT PHOTO, photoid FROM PHOTOS";
 				str = str.concat(search);
 				System.out.println("compleate search: " +str);
 				Statement stmt = connection.createStatement();
 				ResultSet rset = stmt.executeQuery(str);
 				int i=0;
+				int idOld=-1;
+				int id;
 				// Process the results
 				while (rset.next() && i<9) {
 					photos[i] = rset.getString("photo");
+					id = rset.getInt("photoID");
+					if(id==idOld) {
+						i--;
+					}
+					idOld = id;
 					i++;
 				} // end while
 							
@@ -187,16 +195,37 @@ public class DAO {
 		}
 
 		
-		public String getSearchString(boolean name,boolean loc, boolean date, String txtp, String  txtl, String intd) {
+		public String getSearchString(Tree t,boolean ancestors, boolean decendents, boolean name,boolean loc, boolean date, String txtp, String  txtl, String intd) {
 			String search = "";
 			boolean addAND = false;
+			boolean addOR = false;
 			if(name || loc || date) {
 				search = search.concat(" where");
 				if(name) {
-					String psearch = " person LIKE '%" + txtp + "%'";
-					search = search.concat(psearch);
-					System.out.println("search aANDpstring: " +search);
-					addAND = true;
+					if(ancestors || decendents) {
+						String code = this.getPerson(txtp);
+						Node n = t.findPerson(code);
+						search = search.concat("(");
+						if(ancestors) {
+							search = search.concat(n.getAncestors(n));
+							addOR = true;
+						}
+						if( decendents) {
+							if(addOR) {
+								search = search.concat(" OR");
+							}
+							search = search.concat(n.getDecendents(n));
+							
+						}
+						search = search.concat(")");
+						addAND = true;
+					}
+					else {
+						String psearch = " person LIKE '%" + txtp + "%'";
+						search = search.concat(psearch);
+						System.out.println("search aANDpstring: " +search);
+						addAND = true;
+					}
 				}
 				if(loc){
 					if(addAND) {

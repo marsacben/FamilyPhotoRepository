@@ -16,6 +16,7 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 
 import main.database.DAO;
+import main.model.Tree;
 
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JLabel;
@@ -31,12 +32,19 @@ public class eFamilyFotoBookApp extends JFrame{
 	JLabel jPhoto2 = new JLabel(new ImageIcon(""));
 	JLabel jPhoto3 = new JLabel(new ImageIcon(""));
 	JLabel jPhoto4 = new JLabel(new ImageIcon(""));
-	JLabel[] slots = {jPhoto1, jPhoto2, jPhoto3, jPhoto4};
+	JLabel jPhoto5 = new JLabel(new ImageIcon(""));
+	JLabel jPhoto6 = new JLabel(new ImageIcon(""));
+	JLabel jPhoto7 = new JLabel(new ImageIcon(""));
+	JLabel jPhoto8 = new JLabel(new ImageIcon(""));
+	JLabel jPhoto9 = new JLabel(new ImageIcon(""));
+	JLabel[] slots = {jPhoto1, jPhoto2, jPhoto3, jPhoto4, jPhoto5, jPhoto6, jPhoto7, jPhoto8, jPhoto9};
 	private JTextField txtSearchByCountry;
 	private JTextField txtSearchByDate;
 	private JCheckBox chckbxUseLocationFilter;
 	private JCheckBox chckbxUseNameFilter;
 	private JCheckBox chckbxUseDateFilter;
+	private final JCheckBox chckbxAncesters = new JCheckBox("Ancesters");
+	private final JCheckBox chckbxDecendents = new JCheckBox("Decendents");
 
 	/**
 	 * Launch the application.
@@ -68,19 +76,19 @@ public class eFamilyFotoBookApp extends JFrame{
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 960, 656);
+		frame.setBounds(100, 100, 900, 800);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
 				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("left:max(85dlu;default)"),
+				ColumnSpec.decode("min:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
 				FormSpecs.DEFAULT_COLSPEC,
 				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
+				ColumnSpec.decode("max(13dlu;default)"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
+				ColumnSpec.decode("center:default"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,},
+				ColumnSpec.decode("min:grow"),},
 			new RowSpec[] {
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
@@ -139,67 +147,85 @@ public class eFamilyFotoBookApp extends JFrame{
 		//showPhoto(jPhoto4, imagePath);
 		//frame.getContentPane().add(jPhoto4, "4, 8");
 		String[] arr = {imagePath2, imagePath2,imagePath2, imagePath2};
-		//showSearchResults(arr);
-		frame.getContentPane().add(jPhoto1, "4, 6");
-		frame.getContentPane().add(jPhoto2, "6, 6");
-		frame.getContentPane().add(jPhoto3, "8, 6");
-		frame.getContentPane().add(jPhoto4, "4, 8");
 		
 		txtSearchByName = new JTextField();
 		txtSearchByName.setText("Search by name");
 		
 		
-		frame.getContentPane().add(txtSearchByName, "2, 4, left, center");
+		frame.getContentPane().add(txtSearchByName, "4, 4, left, center");
 		txtSearchByName.setColumns(10);
 		
 		txtSearchByCountry = new JTextField();
 		txtSearchByCountry.setText("Search by Country");
-		frame.getContentPane().add(txtSearchByCountry, "2, 6, left, center");
+		frame.getContentPane().add(txtSearchByCountry, "6, 4, left, center");
 		txtSearchByCountry.setColumns(10);
 		
 		txtSearchByDate = new JTextField();
 		txtSearchByDate.setText("Search by Date");
-		frame.getContentPane().add(txtSearchByDate, "2, 8, left, top");
+		frame.getContentPane().add(txtSearchByDate, "8, 4, left, top");
 		txtSearchByDate.setColumns(10);
 		
-		chckbxUseLocationFilter = new JCheckBox("Use Location Filter");
-		frame.getContentPane().add(chckbxUseLocationFilter, "2, 10, left, top");
-		
 		chckbxUseNameFilter = new JCheckBox("Use Name Filter");
-		frame.getContentPane().add(chckbxUseNameFilter, "2, 12");
+		frame.getContentPane().add(chckbxUseNameFilter, "4, 6");
+		
+		chckbxUseLocationFilter = new JCheckBox("Use Location Filter");
+		frame.getContentPane().add(chckbxUseLocationFilter, "6, 6, left, top");
 		
 		chckbxUseDateFilter = new JCheckBox("Use Date Filter");
-		frame.getContentPane().add(chckbxUseDateFilter, "2, 14");
+		frame.getContentPane().add(chckbxUseDateFilter, "8, 6");
+		
+		frame.getContentPane().add(chckbxAncesters, "4, 8");
+		
+		frame.getContentPane().add(chckbxDecendents, "4, 10");
 		JButton btnSearch = new JButton("Search");
 		
-		frame.getContentPane().add(btnSearch, "2, 16, left, top");
+		Tree t = new Tree();
+		t.createTree();
+		
+		frame.getContentPane().add(btnSearch, "8, 10, center, top");
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String name = txtSearchByName.getText();
 				DAO dao = new DAO();
 				dao.connect();
-				String search = dao.getSearchString(chckbxUseNameFilter.isSelected(),chckbxUseLocationFilter.isSelected(), chckbxUseDateFilter.isSelected(),txtSearchByName.getText(), txtSearchByCountry.getText(), txtSearchByDate.getText()); 
+				String search = dao.getSearchString(t, chckbxAncesters.isSelected(), chckbxDecendents.isSelected(), chckbxUseNameFilter.isSelected(),chckbxUseLocationFilter.isSelected(), chckbxUseDateFilter.isSelected(),txtSearchByName.getText(), txtSearchByCountry.getText(), txtSearchByDate.getText()); 
+				dao.connect();
 				String[] arr= dao.getPersonPhotos(search);
 				showSearchResults(arr);
 			}
 		});
+		//showSearchResults(arr);
+		frame.getContentPane().add(jPhoto1, "6, 12");
+		frame.getContentPane().add(jPhoto2, "4, 12");
+		frame.getContentPane().add(jPhoto3, "8, 12");
+		frame.getContentPane().add(jPhoto4, "4, 14");
+		frame.getContentPane().add(jPhoto5, "6, 14");
+		frame.getContentPane().add(jPhoto6, "8, 14");
+		frame.getContentPane().add(jPhoto7, "4, 16");
+		frame.getContentPane().add(jPhoto8, "6, 16");
+		frame.getContentPane().add(jPhoto9, "8, 16");
 		
 		
 	}
 	
 	public void showPhoto(JLabel label, String imagePath) {
-		ImageIcon imageIcon = new ImageIcon(new ImageIcon(imagePath).getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+		ImageIcon imageIcon = new ImageIcon(new ImageIcon(imagePath).getImage().getScaledInstance(200, 200, Image.SCALE_DEFAULT));
 		label.setIcon(imageIcon);
 	}
 	
 	public void showSearchResults(String[] arr) {
 		for(int i=0; i<slots.length; i++) {
-			if(arr[i] != null && slots[i] != null) {
+			if(arr[i] != null) {
 				//JLabel jPhoto1 = new JLabel(new ImageIcon(""));
 				showPhoto(slots[i], arr[i]);
 			}
 			else {
-				slots[i] = new JLabel(new ImageIcon(""));
+				if(i==0) {
+					showPhoto(slots[i], "Fotos/noResults.JPG");
+				}
+				else {
+					showPhoto(slots[i], "noResults.JPG");//white.JPG
+				}
 			}
 		}
 		/*if(arr[0] != null) {
