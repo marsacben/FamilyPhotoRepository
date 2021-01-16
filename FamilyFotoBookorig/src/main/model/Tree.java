@@ -13,8 +13,39 @@ public class Tree {
 
 
 	public void createTree() {
-		LinkedList<Node> AntonioKids = new LinkedList<>();
+		//mom's side
+		LinkedList<Node> SylviaKids = new LinkedList<>();
+		Node Sylvia = new Node("Sylvia Benjet", null ,null, SylviaKids);
+		Node Harry = new Node("Harry Benjet", null ,null, SylviaKids);
+				
+				LinkedList<Node> RosalynKids = new LinkedList<>();
+				Node Rosalyn = new Node("Rosalyn Benjet", Sylvia, Harry, RosalynKids);
+				SylviaKids.add(Rosalyn);
 
+				Node Mervyn = new Node("Mervyn Benjet", Sylvia, Harry, null);
+				SylviaKids.add(Mervyn);
+				
+				Node Lenora = new Node("Lenora Benjet", Sylvia, Harry, null);
+				SylviaKids.add(Lenora);
+		
+		LinkedList<Node> ChicKids = new LinkedList<>();
+		Node Chic = new Node("Cecilia Mae Miner", null ,null, ChicKids);
+		Node Arthur = new Node("Arthur Miner", null ,null, ChicKids);
+				
+				Node Reg = new Node("Reginald Thomas Miner", Chic, Arthur, RosalynKids);
+				ChicKids.add(Reg);
+
+				Node Gloria = new Node("Gloria Miner", Chic, Arthur, null);
+				ChicKids.add(Mervyn);
+
+		LinkedList<Node>Emilio2Kids = new LinkedList<>();
+		Node Corina = new Node("Corina Benjet", Rosalyn, Reg, Emilio2Kids);
+		RosalynKids.add(Corina);
+		
+		
+		
+		//dad's side
+		LinkedList<Node> AntonioKids = new LinkedList<>();
 		Node Antonio = new Node("Antonio Sacristan Colas", null,null, AntonioKids);
 
 		Node Lola = new Node("Dolores Roy Gonzalo", null, null, AntonioKids);
@@ -403,9 +434,6 @@ public class Tree {
 
 						CatyKids.add(AnaIsabelSacristan);
 
-						
-
-						LinkedList<Node>Emilio2Kids = new LinkedList<>();
 
 						Node Emilio2 = new Node("Emilio Sacristan Rock", CatarinaRockVarga, Emilio, Emilio2Kids);
 
@@ -413,10 +441,10 @@ public class Tree {
 
 							
 
-							Node AriSacristan = new Node("Ariana Sacristan Benjet", null, Emilio2, null);
+							Node AriSacristan = new Node("Ariana Sacristan Benjet", Corina, Emilio2, null);
 							Emilio2Kids.add(AriSacristan);
 
-							Node CarmenSacristan = new Node("Maria del Carmen Sacristan Benjet", null, Emilio2, null);
+							Node CarmenSacristan = new Node("Maria del Carmen Sacristan Benjet", Corina, Emilio2, null);
 
 							Emilio2Kids.add(CarmenSacristan);
 							this.me = CarmenSacristan;
@@ -447,6 +475,9 @@ public class Tree {
 	}
 	
 	public Node findPerson(String code) {
+		if(code.equals("me")) {
+			return this.me;
+		}
 		Node n = this.me;
 		System.out.println("new: " + n.getName());
 		for(int i=0; i<code.length(); i++) {

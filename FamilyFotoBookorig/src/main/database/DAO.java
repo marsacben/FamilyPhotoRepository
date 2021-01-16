@@ -35,7 +35,7 @@ public class DAO {
 		try {
 			 connection = DriverManager.getConnection(
 			 		//"jdbc:oracle:thin:@localhost:1521:orcl", USERID, PASSWORD);//local
-					 "jdbc:oracle:thin:@[2806:106e:20:15f4:8cc6:7cee:451:81af]:1521:orcl", USERID, PASSWORD);//external
+					 "jdbc:oracle:thin:@[2806:106e:20:15f4:a021:a095:c66f:e10d]:1521:orcl", USERID, PASSWORD);//external
 		} catch (SQLException e) {
 			System.out.println("Connection Failed! Check output console");
 			e.printStackTrace();
@@ -43,103 +43,19 @@ public class DAO {
 		}
 		System.out.println("Oracle JDBC Driver Connected!");
 		String code = "";
-		/*try {
-			Statement stmt = connection.createStatement();
-			String str = "SELECT table_name, owner, tablespace_name FROM all_tables where table_name='PEOPLE' OR table_name='PHOTOS'"; //where table_name='PEOPLE' OR table_name='PHOTOS'
-			ResultSet rset = stmt.executeQuery(str);
-
-			int custID = 0;
-			String tbName = "";
-			String owner = "";
-			String tbs = "";
-			int age = 0;
-			// Process the results
-			while (rset.next()) {
-				//custID = rset.getInt("id");
-				tbName = rset.getString("table_name");
-				owner = rset.getString("owner");
-				tbs = rset.getString("tablespace_name");
-				//age = rset.getInt("age");
-				System.out.println("table_name: " + tbName+ "   owner: " + owner + "   tablespace_name: " + tbs );
-			} // end while
-						
-			rset.close();
-			stmt.close();
-			//connection.close();
-		} catch (SQLException e) {
-			System.out.println("Get Data Failed! Check output console");
-			e.printStackTrace();
-			return "2";			
-		}*/
+		
 		
 		return "code";
 	}
 
-/*	public static void main(String[] args) {
-		System.out.println("-------Oracle JDBC COnnection Testing ---------");
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			
-		} catch (ClassNotFoundException e){
-			System.out.println("Where is your Oracle JDBC Driver?");
-			e.printStackTrace();
-			return;
-		}
-		
-		System.out.println("Oracle JDBC Driver Registered!");
-		//Connection connection = null;
-	
-		try {
-			 connection = DriverManager.getConnection(
-			 		"jdbc:oracle:thin:localhost:1521:orcl", USERID, PASSWORD);//jdbc:oracle:thin:@csorcl.cs.wpi.edu:1521:orcl", USERID, PASSWORD
-		} catch (SQLException e) {
-			System.out.println("Connection Failed! Check output console");
-			e.printStackTrace();
-			return;
-		}
-		System.out.println("Oracle JDBC Driver Connected!");
-	}*/
-		
-		// Performing the query
-		/*try {
-			Statement stmt = connection.createStatement();
-			String str = "SELECT * FROM CUSTOMER";
-			ResultSet rset = stmt.executeQuery(str);
-
-			int custID = 0;
-			String custName = "";
-			String city = "";
-			int age = 0;
-			// Process the results
-			while (rset.next()) {
-				custID = rset.getInt("id");
-				custName = rset.getString("name");
-				city = rset.getString("city");
-				age = rset.getInt("age");
-				System.out.println("ID: " + custID + "   Name: " + custName + "   City: " + city + "   Age: " + age);
-			} // end while
-						
-			rset.close();
-			stmt.close();
-			connection.close();
-		} catch (SQLException e) {
-			System.out.println("Get Data Failed! Check output console");
-			e.printStackTrace();
-			return;			
-		}*/
 		
 		public String getPerson(String name) {
 			Node n = null;
 			String relationCode = "";
 			try {
-				//Statement stmt = connection.createStatement();
 				String str = "SELECT * FROM People where name LIKE '%"+name +"%'";
-				//PreparedStatement ps = connection.prepareStatement("SELECT * FROM SYSTEM.People where name = ?");//where name = ?
-				//ps.setString(1,name);
-				//ResultSet rset = ps.executeQuery();
 				
 				Statement stmt = connection.createStatement();
-				//String str = "SELECT * FROM CUSTOMER";
 				ResultSet rset = stmt.executeQuery(str);
 				
 	
@@ -154,7 +70,6 @@ public class DAO {
 				rset.close();
 				stmt.close();
 				connection.close();
-				//n = t.findPerson(relationCode);
 			} catch (SQLException e) {
 				System.out.println("Getting Person Data Failed!");
 				e.printStackTrace();

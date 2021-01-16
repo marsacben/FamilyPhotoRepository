@@ -172,6 +172,9 @@ public class eFamilyFotoBookApp extends JFrame{
 				if(list.size()>9) {
 					btnNext.setVisible(true);
 					btnNext.setEnabled(true);
+				}else {
+					btnNext.setVisible(false);
+					btnNext.setEnabled(false);
 				}
 			}
 		});
@@ -250,22 +253,23 @@ public class eFamilyFotoBookApp extends JFrame{
 		else {
 			length = list.size();
 		}
-		for( j=0; j<length; i++) {
-			if(list.size() >= j && list.size()>0) {
+		for( j=0; j<slots.length; j++) {
+			if(list.size() > i) {
 				showPhoto(slots[j], list.get(i));
+				i++;
 			}
 			else {
 				if(i==0) {
 					showPhoto(slots[j], "Fotos/noResults.JPG");
 				}
 				else {
-					showPhoto(slots[j], "noResults.JPG");//white.JPG
+					showPhoto(slots[j], "Fotos/white.JPG");
 				}
 			}
-			j++;
+			
 			
 		}
-		if(j<slots.length) {
+		/*if(j<slots.length) {
 			for(int k=j; k<slots.length; k++) {
 				if(k==0) {
 				showPhoto(slots[k], "Fotos/noResults.JPG");
