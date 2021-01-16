@@ -44,7 +44,7 @@ public class eFamilyFotoBookApp extends JFrame{
 	private JCheckBox chckbxUseLocationFilter;
 	private JCheckBox chckbxUseNameFilter;
 	private JCheckBox chckbxUseDateFilter;
-	private final JCheckBox chckbxAncesters = new JCheckBox("Ancesters");
+	private final JCheckBox chckbxAncesters = new JCheckBox("Ancestors");
 	private final JCheckBox chckbxDecendents = new JCheckBox("Decendents");
 	private final JButton btnNext = new JButton("Next Page");
 	LinkedList<String> list = null;
