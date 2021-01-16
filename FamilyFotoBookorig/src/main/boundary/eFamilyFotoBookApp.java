@@ -239,6 +239,7 @@ public class eFamilyFotoBookApp extends JFrame{
 	
 	public void showSearchResults() {
 		int i=(pagenum*9);
+		int j=0;
 		if(list.size()<1) {
 			showPhoto(slots[0], "Fotos/noResults.JPG");
 		}
@@ -249,7 +250,7 @@ public class eFamilyFotoBookApp extends JFrame{
 		else {
 			length = list.size();
 		}
-		for( int j=0; j<length; i++) {
+		for( j=0; j<length; i++) {
 			if(list.size() >= j && list.size()>0) {
 				showPhoto(slots[j], list.get(i));
 			}
@@ -262,9 +263,17 @@ public class eFamilyFotoBookApp extends JFrame{
 				}
 			}
 			j++;
-			//if(j>slots.length-1) {
-			//	i=list.size();
-			//}
+			
+		}
+		if(j<slots.length) {
+			for(int k=j; k<slots.length; k++) {
+				if(k==0) {
+				showPhoto(slots[k], "Fotos/noResults.JPG");
+				}
+				else {
+					showPhoto(slots[k], "Fotos/white.JPG");
+				}
+			}
 		}
 		/*for(int k=j; k<9;k++) {
 			if(k==0) {
