@@ -41,7 +41,7 @@ public class DAO {
 		}
 		System.out.println("Oracle JDBC Driver Connected!");
 		String code = "";
-		try {
+		/*try {
 			Statement stmt = connection.createStatement();
 			String str = "SELECT table_name, owner, tablespace_name FROM all_tables where table_name='PEOPLE' OR table_name='PHOTOS'"; //where table_name='PEOPLE' OR table_name='PHOTOS'
 			ResultSet rset = stmt.executeQuery(str);
@@ -68,7 +68,7 @@ public class DAO {
 			System.out.println("Get Data Failed! Check output console");
 			e.printStackTrace();
 			return "2";			
-		}
+		}*/
 		
 		return "code";
 	}
@@ -160,10 +160,10 @@ public class DAO {
 			return relationCode;
 		}
 		
-		public String[] getPersonPhotos(String name) {
+		public String[] getPersonPhotos(String search) {
 			String photos[] = new String[9];
 			try {
-				String str = "SELECT PHOTO FROM PHOTOS where person LIKE '%"+name +"%'";
+				String str = "SELECT PHOTO FROM PHOTOS " + search;
 				Statement stmt = connection.createStatement();
 				ResultSet rset = stmt.executeQuery(str);
 				int i=0;
@@ -180,7 +180,35 @@ public class DAO {
 				System.out.println("Getting Person Data Failed!");
 				e.printStackTrace();
 			}
+			System.out.println("photo: " + photos[0]);
 			return photos;
 		}
-}
 
+		
+		public String getSearchString(boolean name,boolean loc, boolean date, String txtp, String  txtl, String intd) {
+			String search = "";
+			boolean addAND = false;
+			if(name) {
+				String psearch = "where person LIKE '%" + txtp + "%'";
+				search.concat(psearch);
+				addAND = true;
+			}
+			if(loc){
+				if(addAND) {
+					search.concat(" AND ");
+				}
+				String lsearch = "where location LIKE '%" + txtp + "%'";
+				search.concat(lsearch);
+				addAND = true;
+			}
+			if(date){
+				if(addAND) {
+					search.concat(" AND ");
+				}
+				String dsearch = "where date = " + txtp;
+				search.concat(dsearch);
+			}
+			return search;
+		}
+
+}
