@@ -163,12 +163,14 @@ public class DAO {
 		public String[] getPersonPhotos(String search) {
 			String photos[] = new String[9];
 			try {
-				String str = "SELECT PHOTO FROM PHOTOS " + search;
+				String str = "SELECT PHOTO FROM PHOTOS";
+				str = str.concat(search);
+				System.out.println("compleate search: " +str);
 				Statement stmt = connection.createStatement();
 				ResultSet rset = stmt.executeQuery(str);
 				int i=0;
 				// Process the results
-				while (rset.next()) {
+				while (rset.next() && i<9) {
 					photos[i] = rset.getString("photo");
 					i++;
 				} // end while
@@ -188,26 +190,31 @@ public class DAO {
 		public String getSearchString(boolean name,boolean loc, boolean date, String txtp, String  txtl, String intd) {
 			String search = "";
 			boolean addAND = false;
-			if(name) {
-				String psearch = "where person LIKE '%" + txtp + "%'";
-				search.concat(psearch);
-				addAND = true;
-			}
-			if(loc){
-				if(addAND) {
-					search.concat(" AND ");
+			if(name || loc || date) {
+				search = search.concat(" where");
+				if(name) {
+					String psearch = " person LIKE '%" + txtp + "%'";
+					search = search.concat(psearch);
+					System.out.println("search aANDpstring: " +search);
+					addAND = true;
 				}
-				String lsearch = "where location LIKE '%" + txtp + "%'";
-				search.concat(lsearch);
-				addAND = true;
-			}
-			if(date){
-				if(addAND) {
-					search.concat(" AND ");
+				if(loc){
+					if(addAND) {
+						search = search.concat(" AND");
+					}
+					String lsearch = " location LIKE '%" + txtl + "%'";
+					search = search.concat(lsearch);
+					addAND = true;
 				}
-				String dsearch = "where date = " + txtp;
-				search.concat(dsearch);
+				if(date){
+					if(addAND) {
+						search = search.concat(" AND");
+					}
+					String dsearch = " year = " + intd;
+					search = search.concat(dsearch);
+				}
 			}
+			System.out.println("search string: " +search);
 			return search;
 		}
 
