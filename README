@@ -1,3 +1,8 @@
+To run: 
+run:
+/FamilyFotoBookorig/src/main/boundary/eFamilyFotoBookApp.java
+as a java application
+
 For the image repository challenge I decided to create a family tree repository of images of my family (89 family members covering 6 generations) for whom you can search photos
 through search filters for name, location, and date and look for ancestors and descendents of the name imputed into the filter (must use name filter to see descendents and ancestors).
 When adding filter for descendents and ancestors this will also include pictures of the person whose descendents or ancestros for whom you are searching.
