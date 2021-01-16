@@ -16,6 +16,7 @@ public class testGetPhotoByName {
 		DAO database = new DAO();
 		database.connect();
 		Tree t = new Tree();
+		t.createTree();
 		String s = database.getSearchString(t, false,false,true, true, true, "Catarina Rock Varga", "Mexico", "2020");
 		database.connect();
 		LinkedList<String> list = database.getPersonPhotos(s);
@@ -29,6 +30,7 @@ public class testGetPhotoByName {
 		DAO database = new DAO();
 		database.connect();
 		Tree t = new Tree();
+		t.createTree();
 		String s = database.getSearchString(t,false,false,true, false, true, "Ariana Sacristan Benjet", "Mexico", "2020");
 		database.connect();
 		LinkedList<String> list = database.getPersonPhotos(s);
@@ -48,6 +50,7 @@ public class testGetPhotoByName {
 		database.connect();
 		LinkedList<String> list = database.getPersonPhotos(s);
 		LinkedList<String> ans = new LinkedList();
+		ans.add("Fotos/Ariana Sacristan 2020.jpg");
 		assertEquals(list, ans);
 	}
 

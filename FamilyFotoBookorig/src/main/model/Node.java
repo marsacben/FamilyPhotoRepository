@@ -88,8 +88,10 @@ public class Node {
 
 	public Node getKid(int num) {
 		LinkedList<Node> k = this.kids;
-		if(num<k.size()) {
-			return this.kids.get(num);
+		if(k != null) {
+			if(num<k.size()) {
+				return this.kids.get(num);
+			}
 		}
 		return null;
 	}

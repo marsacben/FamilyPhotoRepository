@@ -260,14 +260,13 @@ public class Tree {
 
 		Node LajosVarga1 = new Node("Lajos Varga", null, null, RozaKids);
 
-		RozaKids.add(LajosVarga1);
 
 
 			LinkedList<Node> LajosVarga2Kids = new LinkedList<>();
 
-			Node LajosVarga2 = new Node("Lajos Varga II", Roza, null,LajosVarga2Kids);
+			Node LajosVarga2 = new Node("Lajos Varga Fart", Roza, LajosVarga1,LajosVarga2Kids);
 
-			LajosVarga2Kids.add(LajosVarga2);
+			RozaKids.add(LajosVarga2);
 
 
 				LinkedList<Node> PiroskaKids = new LinkedList<>();
@@ -300,7 +299,7 @@ public class Tree {
 
 							LinkedList<Node> AleKids = new LinkedList<>();
 
-							Node AlejandraContrerasRock = new Node("Alejandra Contreras Rock", PriscaRock, null, null);
+							Node AlejandraContrerasRock = new Node("Alejandra Contreras Rock", PriscaRock, null, AleKids);
 
 							PriscaKids.add(AlejandraContrerasRock);
 
@@ -414,7 +413,7 @@ public class Tree {
 
 							
 
-							Node AriSacristan = new Node("Ari Sacristan Benjet", null, Emilio2, null);
+							Node AriSacristan = new Node("Ariana Sacristan Benjet", null, Emilio2, null);
 							Emilio2Kids.add(AriSacristan);
 
 							Node CarmenSacristan = new Node("Maria del Carmen Sacristan Benjet", null, Emilio2, null);
@@ -449,19 +448,22 @@ public class Tree {
 	
 	public Node findPerson(String code) {
 		Node n = this.me;
+		System.out.println("new: " + n.getName());
 		for(int i=0; i<code.length(); i++) {
-			int r =code.charAt(i);
-			if(r=='F' || r=='M') {
-				if(r=='F') {
-					n = n.getDad();
+			if(n != null) {
+				char r =code.charAt(i);
+				if(r=='F' || r=='M') {
+					if(r=='F') {
+						n = n.getDad();
+					}
+					else {
+						n = n.getMom();
+					}
 				}
 				else {
-					n = n.getMom();
+					int num = Character.getNumericValue(r);;
+					n = n.getKid(num);
 				}
-			}
-			else {
-				int num = r;
-				n = n.getKid(num);
 			}
 		}
 		return n;

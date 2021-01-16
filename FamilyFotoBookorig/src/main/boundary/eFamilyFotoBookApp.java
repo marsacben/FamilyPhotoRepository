@@ -166,6 +166,8 @@ public class eFamilyFotoBookApp extends JFrame{
 				String search = dao.getSearchString(t, chckbxAncesters.isSelected(), chckbxDecendents.isSelected(), chckbxUseNameFilter.isSelected(),chckbxUseLocationFilter.isSelected(), chckbxUseDateFilter.isSelected(),txtSearchByName.getText(), txtSearchByCountry.getText(), txtSearchByDate.getText()); 
 				dao.connect();
 				list = dao.getPersonPhotos(search);
+				btnPreviousPage.setVisible(false);
+				btnPreviousPage.setEnabled(false);
 				showSearchResults();
 				if(list.size()>9) {
 					btnNext.setVisible(true);
@@ -236,12 +238,20 @@ public class eFamilyFotoBookApp extends JFrame{
 	}
 	
 	public void showSearchResults() {
-		int j=0;
-		for( int i=(pagenum*9); i<list.size(); i++) {
-			System.out.println(list.get(i));
-			if(list.get(i) != null) {
+		int i=(pagenum*9);
+		if(list.size()<1) {
+			showPhoto(slots[0], "Fotos/noResults.JPG");
+		}
+		int length=0;
+		if(slots.length< list.size()) {
+			length = slots.length;
+		}
+		else {
+			length = list.size();
+		}
+		for( int j=0; j<length; i++) {
+			if(list.size() >= j && list.size()>0) {
 				showPhoto(slots[j], list.get(i));
-				System.out.println(list.get(i));
 			}
 			else {
 				if(i==0) {
@@ -252,10 +262,17 @@ public class eFamilyFotoBookApp extends JFrame{
 				}
 			}
 			j++;
-			if(j>slots.length-1) {
-				i=list.size();
-			}
+			//if(j>slots.length-1) {
+			//	i=list.size();
+			//}
 		}
+		/*for(int k=j; k<9;k++) {
+			if(k==0) {
+				showPhoto(slots[1], "Fotos/noResults.JPG");
+				System.out.println(k+"Fotos/noResults.JPG");
+			}
+			showPhoto(slots[k], "white.JPG");
+		}*/
 		
 	}
 }

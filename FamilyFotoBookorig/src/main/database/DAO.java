@@ -34,8 +34,8 @@ public class DAO {
 	
 		try {
 			 connection = DriverManager.getConnection(
-			 		//"jdbc:oracle:thin:@localhost:1521:orcl", USERID, PASSWORD);//jdbc:oracle:thin:@localhost:1521:orcl", USERID, PASSWORD  jdbc:oracle:thin:localDB/SYSTEM@//localhost:1521/orclpdb
-					 "jdbc:oracle:thin:@[2806:106e:20:15f4:f129:84fd:8cc1:85c7]:1521:orcl", USERID, PASSWORD);
+			 		"jdbc:oracle:thin:@localhost:1521:orcl", USERID, PASSWORD);//jdbc:oracle:thin:@localhost:1521:orcl", USERID, PASSWORD  jdbc:oracle:thin:localDB/SYSTEM@//localhost:1521/orclpdb
+					 //"jdbc:oracle:thin:@[189.147.248.55]:1521:orcl", USERID, PASSWORD);
 		} catch (SQLException e) {
 			System.out.println("Connection Failed! Check output console");
 			e.printStackTrace();
@@ -163,7 +163,7 @@ public class DAO {
 		}
 		
 		public LinkedList<String> getPersonPhotos(String search) {
-			LinkedList<String> photos = new LinkedList();
+			LinkedList<String> photos = new LinkedList<String>();
 			try {
 				String str = "SELECT PHOTO, photoid FROM PHOTOS";
 				str = str.concat(search);
@@ -171,13 +171,15 @@ public class DAO {
 				Statement stmt = connection.createStatement();
 				ResultSet rset = stmt.executeQuery(str);
 				int id;
-				LinkedList<String> ids = new LinkedList();
+				LinkedList<Integer> ids = new LinkedList<Integer>();
 				// Process the results
 				while (rset.next()) {
 					String p = rset.getString("photo");
 					id = rset.getInt("photoID");
-					if(!ids.contains(id)) {
+					if(unique(ids, id)) {
+						System.out.println(id);
 						photos.add(p);
+						ids.add(id);
 					}
 				} // end while
 							
@@ -243,6 +245,17 @@ public class DAO {
 			}
 			System.out.println("search string: " +search);
 			return search;
+		}
+		
+		public boolean unique(LinkedList<Integer> l, int id) {
+			boolean ans = true;
+			for(int i=0; i<l.size(); i++) {
+				if(l.get(i)== id) {
+					ans = false;
+				}
+			}
+			
+			return ans;
 		}
 
 }
