@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -45,6 +46,10 @@ public class eFamilyFotoBookApp extends JFrame{
 	private JCheckBox chckbxUseDateFilter;
 	private final JCheckBox chckbxAncesters = new JCheckBox("Ancesters");
 	private final JCheckBox chckbxDecendents = new JCheckBox("Decendents");
+	private final JButton btnNext = new JButton("Next Page");
+	LinkedList<String> list = null;
+	int pagenum = 0;
+	private final JButton btnPreviousPage = new JButton("Previous Page");
 
 	/**
 	 * Launch the application.
@@ -76,7 +81,7 @@ public class eFamilyFotoBookApp extends JFrame{
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 900, 800);
+		frame.setBounds(100, 100, 900, 825);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
 				FormSpecs.RELATED_GAP_COLSPEC,
@@ -105,64 +110,33 @@ public class eFamilyFotoBookApp extends JFrame{
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,}));
 		
-		String imagePath = "Fotos/CatyRock-Elisa-2020-Mexico.jpg";
-		String imagePath2 = "Fotos/Elisa-Esteban-04-07-1931.jpg";
-		/*
-		BufferedImage myPicture = null;
-		try {
-			myPicture = ImageIO.read(new File(imagePath));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		BufferedImage img = null;
-		try {
-		    img = ImageIO.read(new File("strawberry.jpg"));
-		} catch (IOException e) {
-		    e.printStackTrace();
-		}
-		
-		//ImageIcon photo= new ImageIcon(myPicture)
-		
-		//Image photo = img.getScaledInstance(Jphoto1.getWidth(), Jphoto1.getHeight(),
-		//        Image.SCALE_SMOOTH);
-		*/
-		
-		//JLabel jPhoto1 = new JLabel(new ImageIcon(""));
-		//showPhoto(jPhoto1, imagePath2);
-		//frame.getContentPane().add(jPhoto1, "4, 6");
-		
-		//JLabel jPhoto2 = new JLabel(new ImageIcon(""));
-		//showPhoto(jPhoto2, imagePath2);
-		//frame.getContentPane().add(jPhoto2, "6, 6");
-		
-		//JLabel jPhoto3 = new JLabel(new ImageIcon(""));
-		//showPhoto(jPhoto3, imagePath);
-		//frame.getContentPane().add(jPhoto3, "8, 6");
-		
-		//JLabel jPhoto4 = new JLabel(new ImageIcon(""));
-		//showPhoto(jPhoto4, imagePath);
-		//frame.getContentPane().add(jPhoto4, "4, 8");
-		String[] arr = {imagePath2, imagePath2,imagePath2, imagePath2};
 		
 		txtSearchByName = new JTextField();
 		txtSearchByName.setText("Search by name");
 		
+		btnNext.setVisible(false);
+		btnNext.setEnabled(false);
+		btnPreviousPage.setVisible(false);
+		btnPreviousPage.setEnabled(false);
 		
-		frame.getContentPane().add(txtSearchByName, "4, 4, left, center");
+		
+		frame.getContentPane().add(txtSearchByName, "4, 4, fill, center");
 		txtSearchByName.setColumns(10);
 		
 		txtSearchByCountry = new JTextField();
 		txtSearchByCountry.setText("Search by Country");
-		frame.getContentPane().add(txtSearchByCountry, "6, 4, left, center");
+		frame.getContentPane().add(txtSearchByCountry, "6, 4, fill, center");
 		txtSearchByCountry.setColumns(10);
 		
 		txtSearchByDate = new JTextField();
 		txtSearchByDate.setText("Search by Date");
-		frame.getContentPane().add(txtSearchByDate, "8, 4, left, top");
+		frame.getContentPane().add(txtSearchByDate, "8, 4, fill, top");
 		txtSearchByDate.setColumns(10);
 		
 		chckbxUseNameFilter = new JCheckBox("Use Name Filter");
@@ -185,16 +159,20 @@ public class eFamilyFotoBookApp extends JFrame{
 		frame.getContentPane().add(btnSearch, "8, 10, center, top");
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				pagenum =0;
 				String name = txtSearchByName.getText();
 				DAO dao = new DAO();
 				dao.connect();
 				String search = dao.getSearchString(t, chckbxAncesters.isSelected(), chckbxDecendents.isSelected(), chckbxUseNameFilter.isSelected(),chckbxUseLocationFilter.isSelected(), chckbxUseDateFilter.isSelected(),txtSearchByName.getText(), txtSearchByCountry.getText(), txtSearchByDate.getText()); 
 				dao.connect();
-				String[] arr= dao.getPersonPhotos(search);
-				showSearchResults(arr);
+				list = dao.getPersonPhotos(search);
+				showSearchResults();
+				if(list.size()>9) {
+					btnNext.setVisible(true);
+					btnNext.setEnabled(true);
+				}
 			}
 		});
-		//showSearchResults(arr);
 		frame.getContentPane().add(jPhoto1, "6, 12");
 		frame.getContentPane().add(jPhoto2, "4, 12");
 		frame.getContentPane().add(jPhoto3, "8, 12");
@@ -205,6 +183,50 @@ public class eFamilyFotoBookApp extends JFrame{
 		frame.getContentPane().add(jPhoto8, "6, 16");
 		frame.getContentPane().add(jPhoto9, "8, 16");
 		
+		btnPreviousPage.setVisible(false);
+		btnPreviousPage.setEnabled(false);
+		
+		frame.getContentPane().add(btnPreviousPage, "4, 18, left, default");
+		btnNext.setVisible(false);
+		btnNext.setEnabled(false);
+		frame.getContentPane().add(btnNext, "10, 16, center, top");
+		btnNext.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pagenum++;
+				int pagesavailable = (list.size())/9;
+				int remainder= (list.size())%9;
+				if(remainder != 0) {pagesavailable++;}
+				if(pagenum<pagesavailable) {
+					btnNext.setVisible(false);
+					btnNext.setEnabled(false);
+				}
+				if(pagenum>0) {
+					btnPreviousPage.setVisible(true);
+					btnPreviousPage.setEnabled(true);
+				}
+				showSearchResults();
+			}
+		});
+		
+		frame.getContentPane().add(btnNext, "8, 18");
+		btnPreviousPage.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pagenum--;
+				int pagesavailable = (list.size())/9;
+				int remainder= (list.size())%9;
+				if(remainder != 0) {pagesavailable++;}
+				if(pagenum<pagesavailable) {
+					btnNext.setVisible(true);
+					btnNext.setEnabled(true);
+				}
+				if(pagenum==0) {
+					btnPreviousPage.setVisible(false);
+					btnPreviousPage.setEnabled(false);
+				}
+				showSearchResults();
+			}
+		});
+		
 		
 	}
 	
@@ -213,44 +235,27 @@ public class eFamilyFotoBookApp extends JFrame{
 		label.setIcon(imageIcon);
 	}
 	
-	public void showSearchResults(String[] arr) {
-		for(int i=0; i<slots.length; i++) {
-			if(arr[i] != null) {
-				//JLabel jPhoto1 = new JLabel(new ImageIcon(""));
-				showPhoto(slots[i], arr[i]);
+	public void showSearchResults() {
+		int j=0;
+		for( int i=(pagenum*9); i<list.size(); i++) {
+			System.out.println(list.get(i));
+			if(list.get(i) != null) {
+				showPhoto(slots[j], list.get(i));
+				System.out.println(list.get(i));
 			}
 			else {
 				if(i==0) {
-					showPhoto(slots[i], "Fotos/noResults.JPG");
+					showPhoto(slots[j], "Fotos/noResults.JPG");
 				}
 				else {
-					showPhoto(slots[i], "noResults.JPG");//white.JPG
+					showPhoto(slots[j], "noResults.JPG");//white.JPG
 				}
 			}
-		}
-		/*if(arr[0] != null) {
-			//JLabel jPhoto1 = new JLabel(new ImageIcon(""));
-			showPhoto(jPhoto1, arr[0]);
-			frame.getContentPane().add(jPhoto1, "4, 6");
-		}
-		
-		if(arr[1] != null) {
-			JLabel jPhoto2 = new JLabel(new ImageIcon(""));
-			showPhoto(jPhoto2, arr[1]);
-			frame.getContentPane().add(jPhoto2, "6, 6");
+			j++;
+			if(j>slots.length-1) {
+				i=list.size();
+			}
 		}
 		
-		if(arr[2] != null) {
-		JLabel jPhoto3 = new JLabel(new ImageIcon(""));
-		showPhoto(jPhoto3, arr[2]);
-		frame.getContentPane().add(jPhoto3, "8, 6");
-		}
-		
-		
-		if(arr[3] != null) {
-		JLabel jPhoto4 = new JLabel(new ImageIcon(""));
-		showPhoto(jPhoto4, arr[3]);
-		frame.getContentPane().add(jPhoto4, "4, 8");
-		}*/
 	}
 }

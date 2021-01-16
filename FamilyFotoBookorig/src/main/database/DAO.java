@@ -1,5 +1,6 @@
 package main.database;
 import java.sql.*;
+import java.util.LinkedList;
 
 import main.model.Node;
 import main.model.Tree;
@@ -34,7 +35,7 @@ public class DAO {
 		try {
 			 connection = DriverManager.getConnection(
 			 		//"jdbc:oracle:thin:@localhost:1521:orcl", USERID, PASSWORD);//jdbc:oracle:thin:@localhost:1521:orcl", USERID, PASSWORD  jdbc:oracle:thin:localDB/SYSTEM@//localhost:1521/orclpdb
-					 "jdbc:oracle:thin:@[2806:106e:20:15f4:597c:4e63:2c85:b0eb]:1521:orcl", USERID, PASSWORD);
+					 "jdbc:oracle:thin:@[2806:106e:20:15f4:f129:84fd:8cc1:85c7]:1521:orcl", USERID, PASSWORD);
 		} catch (SQLException e) {
 			System.out.println("Connection Failed! Check output console");
 			e.printStackTrace();
@@ -161,26 +162,23 @@ public class DAO {
 			return relationCode;
 		}
 		
-		public String[] getPersonPhotos(String search) {
-			String photos[] = new String[9];
+		public LinkedList<String> getPersonPhotos(String search) {
+			LinkedList<String> photos = new LinkedList();
 			try {
 				String str = "SELECT PHOTO, photoid FROM PHOTOS";
 				str = str.concat(search);
 				System.out.println("compleate search: " +str);
 				Statement stmt = connection.createStatement();
 				ResultSet rset = stmt.executeQuery(str);
-				int i=0;
-				int idOld=-1;
 				int id;
+				LinkedList<String> ids = new LinkedList();
 				// Process the results
-				while (rset.next() && i<9) {
-					photos[i] = rset.getString("photo");
+				while (rset.next()) {
+					String p = rset.getString("photo");
 					id = rset.getInt("photoID");
-					if(id==idOld) {
-						i--;
+					if(!ids.contains(id)) {
+						photos.add(p);
 					}
-					idOld = id;
-					i++;
 				} // end while
 							
 				rset.close();
@@ -190,7 +188,6 @@ public class DAO {
 				System.out.println("Getting Person Data Failed!");
 				e.printStackTrace();
 			}
-			System.out.println("photo: " + photos[0]);
 			return photos;
 		}
 
@@ -199,26 +196,27 @@ public class DAO {
 			String search = "";
 			boolean addAND = false;
 			boolean addOR = false;
+			boolean addWhere = false;
 			if(name || loc || date) {
 				search = search.concat(" where");
 				if(name) {
-					if(ancestors || decendents) {
-						String code = this.getPerson(txtp);
-						Node n = t.findPerson(code);
-						search = search.concat("(");
-						if(ancestors) {
-							search = search.concat(n.getAncestors(n));
-							addOR = true;
-						}
-						if( decendents) {
-							if(addOR) {
-								search = search.concat(" OR");
+					String code = this.getPerson(txtp);
+					Node n = t.findPerson(code);
+					if((ancestors || decendents) && n != null) {
+							search = search.concat("(");
+							if(ancestors) {
+								search = search.concat(n.getAncestors(n));
+								addOR = true;
 							}
-							search = search.concat(n.getDecendents(n));
+							if( decendents) {
+								if(addOR) {
+									search = search.concat(" OR");
+								}
+								search = search.concat(n.getDecendents(n));
 							
-						}
-						search = search.concat(")");
-						addAND = true;
+							}
+							search = search.concat(")");
+							addAND = true;
 					}
 					else {
 						String psearch = " person LIKE '%" + txtp + "%'";
