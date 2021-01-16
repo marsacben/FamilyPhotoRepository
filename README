@@ -1,0 +1,7 @@
+For the image repository challenge I decided to create a family tree repository of images of my family (89 family members covering 6 generations) for whom you can search photos
+through search filters for name, location, and date and look for ancestors and descendents of the name imputed into the filter (must use name filter to see descendents and ancestors).
+When adding filter for descendents and ancestors this will also include pictures of the person whose descendents or ancestros for whom you are searching.
+You must check the box of the search criteria of the text input you want to use (for example id you want to search for Emilio Sacristan Rock 
+you must imput his name and then select the check box called Use Name Filter). 
+If there are multiple pages of pictures, a next page button will appear in the lower left hand corner.
+Data base is stored locally on my computer. To connect externally, it uses the IP address of my computer which may change and might cause problems.
