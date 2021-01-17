@@ -35,7 +35,7 @@ public class DAO {
 		try {
 			 connection = DriverManager.getConnection(
 			 		//"jdbc:oracle:thin:@localhost:1521:orcl", USERID, PASSWORD);//local
-					 "jdbc:oracle:thin:@[2806:106e:20:15f4:a021:a095:c66f:e10d]:1521:orcl", USERID, PASSWORD);//external
+					 "jdbc:oracle:thin:@DESKTOP-PCIKVCB:1521:orcl", USERID, PASSWORD);//external
 		} catch (SQLException e) {
 			System.out.println("Connection Failed! Check output console");
 			e.printStackTrace();
