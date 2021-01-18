@@ -9,4 +9,5 @@ When adding filter for descendents and ancestors this will also include pictures
 You must check the box of the search criteria of the text input you want to use (for example id you want to search for Emilio Sacristan Rock 
 you must imput his name and then select the check box called Use Name Filter). 
 If there are multiple pages of pictures, a next page button will appear in the lower left hand corner.
-Data base is stored locally on my computer. To connect externally, it uses the IP address of my computer which may change and might cause problems.
+Data base is stored locally on my computer. To connect externally, it uses the host address of my computer which might cause problems. In case you cant connect to the database
+when the program is run externmally I made a video showcasing my application and explaining how I build it. Here is the link to the video: https://youtu.be/ayZEwuSy_1M
