@@ -170,8 +170,8 @@ public class DAO {
 		}
 		
 		/**
-		 * given a list of PhotoID and a integer id
-		 * returns a boolean weather this id is already in the this
+		 * given a list of PhotoIDs and a integer id
+		 * returns a boolean whether this id is already in the this list
 		 * I use this to make sure the search results don't contain any duplicate images
 		 */
 		public boolean unique(LinkedList<Integer> l, int id) {

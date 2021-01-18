@@ -200,7 +200,7 @@ public class eFamilyFotoBookApp extends JFrame{
 		
 		/**
 		 * Next button listener
-		 * Next button will give you the next page of pictures and will make a previous page button appear too
+		 * Next button will give you the next page of pictures and will also make a previous page button appear 
 		 */
 		frame.getContentPane().add(btnPreviousPage, "4, 18, left, default");
 		btnNext.setVisible(false);
@@ -251,7 +251,7 @@ public class eFamilyFotoBookApp extends JFrame{
 	}
 	
 	/**
-	 * showPhoto takes a JLabel and an image Path
+	 * showPhoto() takes a JLabel and an image Path
 	 * it will insert the image into the jLabel
 	 */
 	public void showPhoto(JLabel label, String imagePath) {
