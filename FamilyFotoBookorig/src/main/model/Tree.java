@@ -394,8 +394,6 @@ public class Tree {
 
 							
 
-
-
 					
 
 						LinkedList<Node> SharonKids = new LinkedList<>();
@@ -415,15 +413,6 @@ public class Tree {
 							SharonKids.add(EricEaton);
 
 							
-
-
-
-	
-
-
-
-					
-
 					
 
 					Node CatarinaRockVarga = new Node("Catarina Rock Varga", PiroskaVarga, EstebanRock, CatyKids);
