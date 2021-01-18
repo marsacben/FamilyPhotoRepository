@@ -7,18 +7,16 @@ import main.model.Tree;
 
 public class DAO {
 	
-	// Replace the "USERID" and "PASSWORD" with your CS server username and password to get this to work.
-	// Note: Remember that your Oracle USERID for some of you is different than your regular login name
-
-	 private static final String USERID = "SYSTEM";//"msacristanbenjet"
-	 private static final String PASSWORD = "Sacristan9.";//"Stallions9"
 	 static Connection connection = null;
+	 	 
 	 
-	public String connect() {
+	 /**
+	* connect() creates a connection with the database
+	 */
+	public int connect() {
 		String USERID = "SYSTEM";
 		String PASSWORD = "Sacristan9.";
-		//String USERID = "c##marsacben";
-		//String PASSWORD = "Stallions9";
+		
 		System.out.println("-------Oracle JDBC COnnection Testing ---------");
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -26,31 +24,32 @@ public class DAO {
 		} catch (ClassNotFoundException e){
 			System.out.println("Where is your Oracle JDBC Driver?");
 			e.printStackTrace();
-			return "1";
+			return 0;
 		}
 		
 		System.out.println("Oracle JDBC Driver Registered!");
-		//Connection connection = null;
 	
 		try {
 			 connection = DriverManager.getConnection(
-			 		//"jdbc:oracle:thin:@localhost:1521:orcl", USERID, PASSWORD);//local
-					 "jdbc:oracle:thin:@[2806:106e:20:15f4:a021:a095:c66f:e10d]:1521:orcl", USERID, PASSWORD);//external
+			 	//"jdbc:oracle:thin:@localhost:1521:orcl", USERID, PASSWORD);//local
+					 "jdbc:oracle:thin:@DESKTOP-PCIKVCB:1521:orcl", USERID, PASSWORD);//external
+			 
 		} catch (SQLException e) {
 			System.out.println("Connection Failed! Check output console");
 			e.printStackTrace();
-			return "1";
+			return 0;
 		}
 		System.out.println("Oracle JDBC Driver Connected!");
-		String code = "";
-		
-		
-		return "code";
+		return 1;
 	}
 
 		
+	/**
+	 * getPerson() takes a String
+	 * it will search the database for a person that includes that string as part of their name
+	 * returns a code that allows you to find the person in the family tree
+	 */
 		public String getPerson(String name) {
-			Node n = null;
 			String relationCode = "";
 			try {
 				String str = "SELECT * FROM People where name LIKE '%"+name +"%'";
@@ -71,12 +70,18 @@ public class DAO {
 				stmt.close();
 				connection.close();
 			} catch (SQLException e) {
-				System.out.println("Getting Person Data Failed!");
+				System.out.println("Getting Person Code Failed!");
 				e.printStackTrace();
 			}
 			return relationCode;
 		}
 		
+		
+		/**
+		 * takes a string which has the search filters in SQL
+		 * it will run a query to the database with the desired filters
+		 * returns a list of of image addresses
+		 */
 		public LinkedList<String> getPersonPhotos(String search) {
 			LinkedList<String> photos = new LinkedList<String>();
 			try {
@@ -108,12 +113,13 @@ public class DAO {
 			return photos;
 		}
 
-		
+		/**
+		 * given the filters and entered text values will create an SQL 'WHERE' query
+		 */
 		public String getSearchString(Tree t,boolean ancestors, boolean decendents, boolean name,boolean loc, boolean date, String txtp, String  txtl, String intd) {
 			String search = "";
 			boolean addAND = false;
 			boolean addOR = false;
-			boolean addWhere = false;
 			if(name || loc || date) {
 				search = search.concat(" where");
 				if(name) {
@@ -162,6 +168,11 @@ public class DAO {
 			return search;
 		}
 		
+		/**
+		 * given a list of PhotoID and a integer id
+		 * returns a boolean weather this id is already in the this
+		 * I use this to make sure the search results don't contain any duplicate images
+		 */
 		public boolean unique(LinkedList<Integer> l, int id) {
 			boolean ans = true;
 			for(int i=0; i<l.size(); i++) {

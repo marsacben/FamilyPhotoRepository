@@ -4,12 +4,8 @@ import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.LinkedList;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import com.jgoodies.forms.layout.FormLayout;
@@ -25,6 +21,7 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 
+@SuppressWarnings("serial")
 public class eFamilyFotoBookApp extends JFrame{
 
 	private JFrame frame;
@@ -156,19 +153,29 @@ public class eFamilyFotoBookApp extends JFrame{
 		Tree t = new Tree();
 		t.createTree();
 		
+		/**
+		 * Listener for the submit button
+		 * when button is clicked a query with the specified filter will be sent to the database to search for photos
+		 * the database returns the address of were the specific pictures are located
+		 */
 		frame.getContentPane().add(btnSearch, "8, 10, center, top");
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pagenum =0;
-				String name = txtSearchByName.getText();
 				DAO dao = new DAO();
-				dao.connect();
+				int con = 0;
+				con = dao.connect();
+				if(con == 0) {
+					txtSearchByCountry.setText("DB NOT connected");
+				}
+				
 				String search = dao.getSearchString(t, chckbxAncesters.isSelected(), chckbxDecendents.isSelected(), chckbxUseNameFilter.isSelected(),chckbxUseLocationFilter.isSelected(), chckbxUseDateFilter.isSelected(),txtSearchByName.getText(), txtSearchByCountry.getText(), txtSearchByDate.getText()); 
 				dao.connect();
 				list = dao.getPersonPhotos(search);
 				btnPreviousPage.setVisible(false);
 				btnPreviousPage.setEnabled(false);
 				showSearchResults();
+				//this will add a next page button if there are more pictures that were returned that can fit into one page
 				if(list.size()>9) {
 					btnNext.setVisible(true);
 					btnNext.setEnabled(true);
@@ -191,6 +198,10 @@ public class eFamilyFotoBookApp extends JFrame{
 		btnPreviousPage.setVisible(false);
 		btnPreviousPage.setEnabled(false);
 		
+		/**
+		 * Next button listener
+		 * Next button will give you the next page of pictures and will make a previous page button appear too
+		 */
 		frame.getContentPane().add(btnPreviousPage, "4, 18, left, default");
 		btnNext.setVisible(false);
 		btnNext.setEnabled(false);
@@ -213,6 +224,10 @@ public class eFamilyFotoBookApp extends JFrame{
 			}
 		});
 		
+		/**
+		 * Previous Page button listener
+		 * Previous Page button will return you to the previous page
+		 */
 		frame.getContentPane().add(btnNext, "8, 18");
 		btnPreviousPage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -235,23 +250,26 @@ public class eFamilyFotoBookApp extends JFrame{
 		
 	}
 	
+	/**
+	 * showPhoto takes a JLabel and an image Path
+	 * it will insert the image into the jLabel
+	 */
 	public void showPhoto(JLabel label, String imagePath) {
 		ImageIcon imageIcon = new ImageIcon(new ImageIcon(imagePath).getImage().getScaledInstance(200, 200, Image.SCALE_DEFAULT));
 		label.setIcon(imageIcon);
 	}
 	
+	
+	/**
+	 * showSearchResults will display the images 
+	 * found from the search
+	 * if no photos were found in the search "no results found" will appear
+	 */
 	public void showSearchResults() {
 		int i=(pagenum*9);
 		int j=0;
 		if(list.size()<1) {
 			showPhoto(slots[0], "Fotos/noResults.JPG");
-		}
-		int length=0;
-		if(slots.length< list.size()) {
-			length = slots.length;
-		}
-		else {
-			length = list.size();
 		}
 		for( j=0; j<slots.length; j++) {
 			if(list.size() > i) {
@@ -261,6 +279,7 @@ public class eFamilyFotoBookApp extends JFrame{
 			else {
 				if(i==0) {
 					showPhoto(slots[j], "Fotos/noResults.JPG");
+					i++;
 				}
 				else {
 					showPhoto(slots[j], "Fotos/white.JPG");
@@ -269,23 +288,5 @@ public class eFamilyFotoBookApp extends JFrame{
 			
 			
 		}
-		/*if(j<slots.length) {
-			for(int k=j; k<slots.length; k++) {
-				if(k==0) {
-				showPhoto(slots[k], "Fotos/noResults.JPG");
-				}
-				else {
-					showPhoto(slots[k], "Fotos/white.JPG");
-				}
-			}
-		}
-		/*for(int k=j; k<9;k++) {
-			if(k==0) {
-				showPhoto(slots[1], "Fotos/noResults.JPG");
-				System.out.println(k+"Fotos/noResults.JPG");
-			}
-			showPhoto(slots[k], "white.JPG");
-		}*/
-		
 	}
 }
