@@ -17,6 +17,11 @@ public class Node {
 		this.kids = kids;
 	}
 	
+	
+	/**
+	 * given a node, it will find all it ancestors and
+	 * return a string which includes all their names in a SQL format
+	 */
 	public String getAncestors(Node n){
 		String s= "";
 		if(n != null) {
@@ -37,6 +42,11 @@ public class Node {
 		return s;
 	}
 	
+	
+	/**
+	 * given a node, it will find all it descendants and
+	 * return a string which includes all their names in a SQL format
+	 */
 	public String getDecendents(Node n){
 		String s= "";
 		if(n != null) {
@@ -53,6 +63,10 @@ public class Node {
 		}
 		return s;
 	}
+	
+	///////////////////////////////
+	//getters and setters
+	///////////////
 	
 	public String getName() {
 		return Name;

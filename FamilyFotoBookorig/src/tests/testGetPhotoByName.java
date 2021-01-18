@@ -20,7 +20,7 @@ public class testGetPhotoByName {
 		String s = database.getSearchString(t, false,false,true, true, true, "Catarina Rock Varga", "Mexico", "2020");
 		database.connect();
 		LinkedList<String> list = database.getPersonPhotos(s);
-		LinkedList<String> ans = new LinkedList();
+		LinkedList<String> ans = new LinkedList<String>();
 		ans.add("Fotos/CatyRock-Elisa-2020-Mexico.jpg");
 		assertEquals(list, ans);
 	}
@@ -34,7 +34,7 @@ public class testGetPhotoByName {
 		String s = database.getSearchString(t,false,false,true, false, true, "Ariana Sacristan Benjet", "Mexico", "2020");
 		database.connect();
 		LinkedList<String> list = database.getPersonPhotos(s);
-		LinkedList<String> ans = new LinkedList();
+		LinkedList<String> ans = new LinkedList<String>();
 		ans.add("Fotos/Ariana Sacristan 2020.jpg");
 		assertEquals(list, ans);
 	}
@@ -49,7 +49,7 @@ public class testGetPhotoByName {
 		String s = database.getSearchString(t,false,true,true, false, true, "Emilio Sacristan Rock", "Mexico", "2020");
 		database.connect();
 		LinkedList<String> list = database.getPersonPhotos(s);
-		LinkedList<String> ans = new LinkedList();
+		LinkedList<String> ans = new LinkedList<String>();
 		ans.add("Fotos/Ariana Sacristan 2020.jpg");
 		assertEquals(list, ans);
 	}

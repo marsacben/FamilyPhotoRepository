@@ -11,7 +11,9 @@ public class Tree {
 		return me;
 	}
 
-
+	/**
+	 * creates my family tree
+	 */
 	public void createTree() {
 		//mom's side
 		LinkedList<Node> SylviaKids = new LinkedList<>();
@@ -36,7 +38,7 @@ public class Tree {
 				ChicKids.add(Reg);
 
 				Node Gloria = new Node("Gloria Miner", Chic, Arthur, null);
-				ChicKids.add(Mervyn);
+				ChicKids.add(Gloria);
 
 		LinkedList<Node>Emilio2Kids = new LinkedList<>();
 		Node Corina = new Node("Corina Benjet", Rosalyn, Reg, Emilio2Kids);
@@ -474,13 +476,24 @@ public class Tree {
 					
 	}
 	
+	
+	/**
+	 * given a code
+	 * it will use the code to traverse the tree to a specific node and
+	 * returns that node
+	 */
 	public Node findPerson(String code) {
+		
 		if(code.equals("me")) {
 			return this.me;
 		}
+		
 		Node n = this.me;
 		System.out.println("new: " + n.getName());
 		for(int i=0; i<code.length(); i++) {
+			// F looks to the father node
+			//M looks to the mothers node
+			// a number will be the child of that node in order of birth
 			if(n != null) {
 				char r =code.charAt(i);
 				if(r=='F' || r=='M') {
