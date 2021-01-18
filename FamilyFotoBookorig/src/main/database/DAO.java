@@ -31,6 +31,7 @@ public class DAO {
 	
 		try {
 			 connection = DriverManager.getConnection(
+
 			 	//"jdbc:oracle:thin:@localhost:1521:orcl", USERID, PASSWORD);//local
 					 "jdbc:oracle:thin:@DESKTOP-PCIKVCB:1521:orcl", USERID, PASSWORD);//external
 			 
